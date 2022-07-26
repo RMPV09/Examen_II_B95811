@@ -1,7 +1,31 @@
-﻿
+﻿@model IList<Examen_II_B95811.Models.SodaModel>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>This is a h1 Title</h1>
+<h1> This is the viewbag title @ViewBag.MainTitle</h1>
+<div>
+    <table class=" table">
+        <thead>
+            <tr>
+                <th>Item number</th>
+                <th>Soda name</th>
+                <th>Cans availabe</th>
+                <th>Price of soda</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(int index = 0; index < Model.Count; index++)
+            {
+                <tr>
+                    <td>@(index+1)</td>
+                    <td>@Model.ElementAtOrDefault(index).Name</td>
+                    <td>@Model.ElementAtOrDefault(index).CansAvailable</td>
+                    <td>@Model.ElementAtOrDefault(index).Currency.CurrencySymbol @Model.ElementAtOrDefault(index).PriceOfCan</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

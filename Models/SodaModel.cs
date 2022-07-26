@@ -6,6 +6,7 @@ namespace Examen_II_B95811.Models
 
         public int CansAvailable { get; set; }
         public double PriceOfCan { get; set; }
+        public CurrencyModel Currency { get; set; } = new CurrencyModel("₡",0,0);
         public SodaModel()
         {
             this.Name = String.Empty;

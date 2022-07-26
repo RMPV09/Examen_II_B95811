@@ -17,7 +17,9 @@ namespace Examen_II_B95811.Controllers
         public IActionResult Index()
         {
             Database myData = new Database();
-            return View();
+            ViewBag.MainTitle = "Drinks choices";
+            var sodas = myData.GetSodas();
+            return View(sodas);
         }
 
         public IActionResult Privacy()
