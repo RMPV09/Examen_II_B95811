@@ -8,22 +8,23 @@ namespace Examen_II_B95811.Controllers
     public class SodaMachineController : Controller
     {
         private readonly ILogger<SodaMachineController> _logger;
+        private Database myData = new Database();
 
         public SodaMachineController(ILogger<SodaMachineController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult ShowSodas()
         {
-            Database myData = new Database();
             ViewBag.MainTitle = "Drinks choices";
             var sodas = myData.GetSodas();
             return View(sodas);
         }
 
-        public IActionResult Privacy()
+        public IActionResult PayForSodas(SodaModel mySoda, int amount)
         {
+            myData.RemoveSodas(mySoda, amount);
             return View();
         }
 
