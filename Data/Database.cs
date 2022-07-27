@@ -8,30 +8,44 @@ namespace Examen_II_B95811.Data
     {
         public IList<SodaModel> Sodas { get; set; } = new List<SodaModel>();
 
-        public Database()
+        public IList<SodaModel> SetDatabase()
         {
-            Sodas.Add(new SodaModel("CocaCola", 10, 500));
-            Sodas.Add(new SodaModel("Pepsi", 8, 600));
-            Sodas.Add(new SodaModel("Fanta", 10, 550));
-            Sodas.Add(new SodaModel("Sprite", 15, 725));
+            Sodas.Add(new SodaModel("CocaCola", 10, 500, "₡"));
+            Sodas.Add(new SodaModel("Pepsi", 8, 600, "₡"));
+            Sodas.Add(new SodaModel("Fanta", 10, 550, "₡"));
+            Sodas.Add(new SodaModel("Sprite", 15, 725, "₡"));
+            return Sodas;
         }
+
         public IList<SodaModel> GetSodas() 
         {
             return Sodas;
         }
 
-        public SodaModel RemoveSodas(SodaModel NameOfSoda, int AmountOfCans) 
+        public IList<SodaModel> RemoveSodas(int amountOfCans, int index) 
         {
-            int index = Sodas.IndexOf(NameOfSoda);
-            Sodas.ElementAtOrDefault(index).CansAvailable -= AmountOfCans;
-            return NameOfSoda;
+            Sodas.ElementAt(index).CansAvailable -= amountOfCans;
+            return Sodas;
         }
 
-        public SodaModel AddSodas(SodaModel NameOfSoda, int AmountOfCans)
+        public SodaModel AddSodas(SodaModel nameOfSoda, int amountOfCans)
         {
-            int index = Sodas.IndexOf(NameOfSoda);
-            Sodas.ElementAtOrDefault(index).CansAvailable += AmountOfCans;
-            return NameOfSoda;
+            nameOfSoda.CansAvailable += amountOfCans;
+            return nameOfSoda;
+        }
+
+        public int GetIndexBySoda(string nameOfSoda)
+        {
+            int index = -1;
+            for (int myIndex = 0; myIndex < Sodas.Count(); myIndex++) 
+            {
+                if (Sodas.ElementAt(myIndex).Name == nameOfSoda) 
+                {
+                    index = myIndex;
+                    break;
+                }
+            }
+            return index;
         }
     }
 }
