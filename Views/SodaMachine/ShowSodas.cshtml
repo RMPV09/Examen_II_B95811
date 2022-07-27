@@ -47,14 +47,17 @@
         <div class="form-horizontal">
             <div class="form-group">
                 @Html.LabelFor(model => model.ASoda.Name)
-                @Html.TextBoxFor(model => model.ASoda.Name, new { @placeholder = "Please, type in the soda's name, Ex: Coca Cola",@class = "form-control", @Value = "" })
+                @Html.TextBoxFor(model => model.ASoda.Name, new { @placeholder = "Please, type in the soda's name, Ex: Coca Cola",@class = "form-control", @id = "NameOfSoda"})
+
                 @Html.ValidationMessageFor(model => model.ASoda.Name, "", new { @class="text-danger" })
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.ASoda.CansAvailable)
-                @Html.TextBoxFor(model => model.ASoda.CansAvailable, new { @placeholder = "Please, type in the soda's name",@class = "form-control" })
+                @Html.TextBoxFor(model => model.ASoda.CansAvailable, new { @placeholder = "Please, type in the soda's name",@class = "form-control" , @id = "CansOfSoda"})
                 @Html.ValidationMessageFor(model => model.ASoda.CansAvailable, "", new { @class="text-danger" })
             <br>
+            <br>
+            <p>Cost of shopping in person: €<span id="inPersonCostText"></span> <br /></p>
             </div>
                 <input type="submit" class="btn btn-success" value="Buy" />
             </div>
@@ -67,7 +70,17 @@
             };  
         </script>  
     } 
-    
+    <script>
+            var inPersonTextElement = document.getElementById("inPersonCostText");
+            var mySodaName = document.getElementById("NameOfSoda");
+        function try1()
+        {
+
+            inPersonTextElement.innerText = mySodaName.value;
+            mySodaName.innerText = "AzucarMorena3";
+        }
+        mySodaName.onchange = try1;
+    </script>
     
 
 </body>
