@@ -77,5 +77,24 @@ namespace Examen_II_B95811.Handlers
             conexion.Close();
             return success;
         }
+
+        public SodaModel GetAllSodasByName(string myName)
+        {
+            List<SodaModel> mySodas = new List<SodaModel>();
+            string myQuery = "SELECT * FROM dbo.Soda WHERE Name = myName";
+            DataTable resultTable = CreateQueryTable(myQuery);
+            foreach (DataRow row in resultTable.Rows)
+            {
+                mySodas.Add(
+                new SodaModel
+                {
+                    Name = Convert.ToString(row["Name"]),
+                    CansAvailable = Convert.ToInt32(row["CansAvailable"]),
+                    PriceOfCan = Convert.ToInt32(row["PriceOfCan"]),
+                    Currency = Convert.ToString(row["CurrencySymbol"]),
+                });
+            }
+            return mySodas.FirstOrDefault();
+        }
     }
 }

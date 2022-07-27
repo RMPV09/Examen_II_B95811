@@ -9,7 +9,7 @@ namespace Examen_II_B95811.Models
         
         public string Name { get; set; }
         [Required(ErrorMessage = "Choose the amount of cans")]
-        [DisplayName("Cans available")]
+        [DisplayName("Cans chosen")]
         public int CansAvailable { get; set; }
         public double PriceOfCan { get; set; }
         public string Currency { get; set; }
