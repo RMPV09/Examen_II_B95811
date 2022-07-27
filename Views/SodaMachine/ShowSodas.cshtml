@@ -1,53 +1,78 @@
-﻿@model IList<Examen_II_B95811.Models.SodaModel>
+﻿
+@model Examen_II_B95811.Models.ViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
-@using (Html.BeginForm("PayForSodas", "SodaMachine", FormMethod.Post, new { enctype ="multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    <h1>Type in the name and amount of cans of the soda of your choice</h1>
-    <div class="form-horizontal">
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstOrDefault().Name)
-            @Html.TextBoxFor(model => model.FirstOrDefault().Name, new { @class = "form-control", @Value = "" })
-            @Html.ValidationMessageFor(model => model.FirstOrDefault().Name, "", new { @class="text-danger" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstOrDefault().CansAvailable)
-            @Html.TextBoxFor(model => model.FirstOrDefault().CansAvailable, new { @placeholder = "Please, type in the soda's name",@class = "form-control" })
-            @Html.ValidationMessageFor(model => model.FirstOrDefault().CansAvailable, "", new { @class="text-danger" })
-        </div>
+<!DOCTYPE html>
+<html>
+<head>
 
-        <input type="submit" class="btn btn-success" value="Crear" />
-    </div>
-}
-<h1>This is a h1 Title</h1>
-<h1> This is the viewbag title @ViewBag.MainTitle</h1>
-<div>
-    <table class=" table">
-        <thead>
-            <tr>
-                <th>Item number</th>
-                <th>Soda name</th>
-                <th>Cans availabe</th>
-                <th>Price of soda</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for(int index = 0; index < Model.Count; index++)
-            {
+    <meta name="viewport" content="width=device-width" />
+
+    <title>how to display message using viewbag in mvc.</title>
+
+</head>
+<body>
+    <h1>This is a h1 Title</h1>
+    <h1> This is the viewbag title @ViewBag.MainTitle</h1>
+    <div>
+        <table class=" table">
+            <thead>
                 <tr>
-                    <td>@(index+1)</td>
-                    <td>@Model.ElementAtOrDefault(index).Name</td>
-                    <td>@Model.ElementAtOrDefault(index).CansAvailable</td>
-                    <td>@Model.ElementAtOrDefault(index).Currency @Model.ElementAtOrDefault(index).PriceOfCan</td>
+                    <th>Item number</th>
+                    <th>Soda name</th>
+                    <th>Cans availabe</th>
+                    <th>Price of soda</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div>
-    <button onclick="PayForSodas"> Pay </button>
-</div>
+            </thead>
+            <tbody>
+                @for(int index = 0; index < Model.SodaList.Count; index++)
+                {
+                    <tr>
+                        <td>@ViewBag.Message</td>
+                        <td>@Model.SodaList.ElementAtOrDefault(index).Name</td>
+                        <td>@Model.SodaList.ElementAtOrDefault(index).CansAvailable</td>
+                        <td>@Model.SodaList.ElementAtOrDefault(index).Currency @Model.SodaList.ElementAtOrDefault(index).PriceOfCan</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @using (Html.BeginForm("PayForSodas", "SodaMachine", FormMethod.Post, new { enctype ="multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <h1>Type in the name and amount of cans of the soda of your choice</h1>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ASoda.Name)
+                @Html.TextBoxFor(model => model.ASoda.Name, new { @class = "form-control", @Value = "" })
+                @Html.ValidationMessageFor(model => model.ASoda.Name, "", new { @class="text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ASoda.CansAvailable)
+                @Html.TextBoxFor(model => model.ASoda.CansAvailable, new { @placeholder = "Please, type in the soda's name",@class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ASoda.CansAvailable, "", new { @class="text-danger" })
+            <br>
+            </div>
+                <input type="submit" class="btn btn-success" value="Crear" />
+            </div>
+    }
+    @if (ViewBag.Message != null)  
+    {  
+        <script type="text/javascript">  
+            window.onload = function () {  
+                alert("@ViewBag.Message");  
+            };  
+        </script>  
+    } 
+    
+
+        <p> @ViewBag.Message</p>
+    
+
+</body>
+
+</html>
 

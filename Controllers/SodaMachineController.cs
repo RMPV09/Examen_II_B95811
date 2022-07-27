@@ -9,29 +9,28 @@ namespace Examen_II_B95811.Controllers
     public class SodaMachineController : Controller
     {
         private readonly ILogger<SodaMachineController> _logger;
-        private Database _myData = new Database();
         public SodaMachineController(ILogger<SodaMachineController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult ShowSodas(Database a)
+        public IActionResult ShowSodas()
         {
-            SodasHandler myHandler = new SodasHandler();
-            var myTempVar = myHandler.GetAllSodas();
-            return View(myTempVar);
-            /*
             ViewBag.MainTitle = "Drinks choices";
-            if (a.Sodas.Count == 0) 
+            ViewModel mymodel = new ViewModel();  
+            SodasHandler myHandler = new SodasHandler();
+            mymodel.SodaList = myHandler.GetAllSodas();
+            mymodel.ASoda = new SodaModel();
+            if (TempData["shortMessage"] != null)
             {
-                ViewBag.Message = "Success!";
-            }
-            _myData.Sodas = _myData.SetDatabase();
-            isFirstTime = false;
-            
-            return View(_myData.Sodas);
-            */
+                ViewBag.Message = TempData["shortMessage"].ToString();
 
+            }
+            else 
+            {
+                ViewBag.Message = "Record Inserted successfully!!!";
+            }
+            return View(mymodel);
         }
 
         [HttpGet]
@@ -41,29 +40,35 @@ namespace Examen_II_B95811.Controllers
         }
 
         [HttpPost]
-        public IActionResult PayForSodas(SodaModel mySoda)
+        public IActionResult PayForSodas(ViewModel mySoda)
         {
+            ViewBag.Success = false;
             try
             {
-                if (ModelState.IsValid)
+                if (mySoda.ASoda != null)
                 {
-                    //int index = _myData.GetIndexBySoda(mySoda.Name);
-                    //int amount = mySoda.CansAvailable;
-                    //_myData.Sodas = _myData.RemoveSodas(amount, index);
-                    //_myData.Sodas.ElementAt(0).Name = "Hola";
-                    ViewBag.Message = "Success!";
-                    ModelState.Clear();
-
+                    SodaModel mySodaModel = new SodaModel();
+                    mySodaModel = mySoda.ASoda; 
+                    SodasHandler mySodasHandler = new SodasHandler();
+                    ViewBag.Success = mySodasHandler.ModifyInventoryOfSodas(mySodaModel);
+                    if (ViewBag.Success) 
+                    {
+                        ViewBag.Message = "There is success!";
+                        ModelState.Clear();
+                    }
                 }
-                Database _myData2 = new Database();
-                _myData2.Sodas = _myData2.SetDatabase();
-                _myData2.Sodas.ElementAtOrDefault(0).Name = "Holiwis";
-                return RedirectToAction("ShowSodas", new { Database = _myData2 } );
+                TempData["shortMessage"] = "MyMessage";
+                //ViewBag.Message = "Record Inserted successfully";
+                
+
+                return RedirectToAction("ShowSodas");
             }
             catch 
             {
-                ViewBag.Message = "Failure!";
-                return RedirectToAction("ShowSodas");
+                ViewBag.Message = "There is NOT success!";
+                return View();
+
+                //return RedirectToAction("ShowSodas");
             }
         }
 

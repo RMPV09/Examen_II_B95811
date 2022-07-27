@@ -28,9 +28,9 @@ namespace Examen_II_B95811.Handlers
             return formatedQuery;
         }
 
-        public IList<SodaModel> GetAllSodas()
+        public List<SodaModel> GetAllSodas()
         {
-            IList<SodaModel> mySodas = new List<SodaModel>();
+            List<SodaModel> mySodas = new List<SodaModel>();
             string myQuery = "SELECT * FROM dbo.Soda ";
             DataTable resultTable = CreateQueryTable(myQuery);
             foreach (DataRow row in resultTable.Rows)
@@ -45,6 +45,37 @@ namespace Examen_II_B95811.Handlers
                 });
             }
             return mySodas;
+        }
+
+        public bool AddSodas(SodaModel mySoda) 
+        {
+            bool success = false;
+            var myQuery = @"INSERT INTO [dbo].[Soda] ([Name], [CansAvailable], [PriceOfCan],
+                            [CurrencySymbol]) VALUES (@Name, @Cans, @Price, @Currency) ";
+            var queryCommand  = new SqlCommand(myQuery, conexion);
+            queryCommand.Parameters.AddWithValue("@Name", mySoda.Name);
+            queryCommand.Parameters.AddWithValue("@Cans", mySoda.CansAvailable);
+            queryCommand.Parameters.AddWithValue("@Price", mySoda.PriceOfCan);
+            queryCommand.Parameters.AddWithValue("@Currency", mySoda.Currency);
+            conexion.Open();
+            success = queryCommand.ExecuteNonQuery() >= 1;
+            conexion.Close();
+            return success;
+        }
+
+        public bool ModifyInventoryOfSodas(SodaModel mySoda)
+        {
+            bool success = false;
+            var myQuery = @"UPDATE [dbo].[Soda] SET CansAvailable = @Cans
+                                                WHERE Name = @Name  ";
+            var queryCommand = new SqlCommand(myQuery, conexion);
+            queryCommand.Parameters.AddWithValue("@Name", mySoda.Name);
+            queryCommand.Parameters.AddWithValue("@Cans", mySoda.CansAvailable);
+
+            conexion.Open();
+            success = queryCommand.ExecuteNonQuery() >= 1;
+            conexion.Close();
+            return success;
         }
     }
 }
