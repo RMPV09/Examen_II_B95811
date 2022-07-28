@@ -1,11 +1,11 @@
-﻿
-@model Examen_II_B95811.Models.ViewModel
+﻿@model Examen_II_B95811.Models.ViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
 <!DOCTYPE html>
 <html>
+    @using System.Text.Json;
 <head>
 
     <meta name="viewport" content="width=device-width" />
@@ -48,7 +48,6 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.ASoda.Name)
                 @Html.TextBoxFor(model => model.ASoda.Name, new { @placeholder = "Please, type in the soda's name, Ex: Coca Cola",@class = "form-control", @id = "NameOfSoda"})
-
                 @Html.ValidationMessageFor(model => model.ASoda.Name, "", new { @class="text-danger" })
             </div>
             <div class="form-group">
@@ -57,8 +56,15 @@
                 @Html.ValidationMessageFor(model => model.ASoda.CansAvailable, "", new { @class="text-danger" })
             <br>
             <br>
-            <p>Cost of shopping in person: €<span id="inPersonCostText"></span> <br /></p>
             </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ASoda.PriceOfCan, new { style = "display: none;" })
+                @Html.TextBoxFor(model => model.ASoda.PriceOfCan, new { @placeholder = "Please, type in the soda's name",@class = "form-control" , @id = "PriceOfSoda", style = "display: none;" })
+                @Html.ValidationMessageFor(model => model.ASoda.PriceOfCan, "", new { @class="text-danger" })
+            <br>
+            <br>
+            </div>
+                <p>Total cost: ¢<span id="totalCost"></span> <br /></p>
                 <input type="submit" class="btn btn-success" value="Buy" />
             </div>
     }
@@ -71,15 +77,31 @@
         </script>  
     } 
     <script>
-            var inPersonTextElement = document.getElementById("inPersonCostText");
-            var mySodaName = document.getElementById("NameOfSoda");
+            var json = JsonSerializer.Serialize(Model.SodaList);
+            var totalCostElement = document.getElementById("totalCost");
+            var mySodaCansElement = document.getElementById("CansOfSoda");
+            var mySodaPriceElement = document.getElementById("PriceOfSoda");
+            var mySodaNameElement = document.getElementById("NameOfSoda");
+            var result = [];
+            for(var i in json_data) 
+            {
+                result.push([i, json [i]]);
+            }
         function try1()
         {
+                console.log("Value of result", typeOf(result))
+                for(var index = 0; index < result.length; index++)
+                {
+                    console.log("Value of result", typeOf(result[i]))
 
-            inPersonTextElement.innerText = mySodaName.value;
-            mySodaName.innerText = "AzucarMorena3";
+                    if (result[i] == mySodaNameElement.Value) 
+                    {
+                        mySodaPriceElement.value = Model.SodaList.ElementAtOrDefault(index).PriceOfCan
+                    }
+                }
+            totalCostElement.innerText = (125 * mySodaCansElement.value);
         }
-        mySodaName.onchange = try1;
+        mySodaCansElement.onchange = try1;
     </script>
     
 
